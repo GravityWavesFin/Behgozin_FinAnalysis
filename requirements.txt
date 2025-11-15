@@ -1,0 +1,40 @@
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+openpyxl>=3.1.0
+
+# Financial Data
+finpy-tse>=1.0.0
+jdatetime>=4.1.0
+
+# Data Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.14.0
+
+# Web Scraping & HTML Parsing
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Analysis & Statistics
+scipy>=1.10.0
+statsmodels>=0.14.0
+scikit-learn>=1.3.0
+
+# HTML/PDF Generation
+xhtml2pdf>=0.2.11
+reportlab>=4.0.0
+Pillow>=10.0.0
+jinja2>=3.1.0
+arabic-reshaper>=3.0.0
+python-bidi>=0.4.2
+
+# Reporting
+jupyter>=1.0.0
+notebook>=7.0.0
+reportlab>=4.0.0
+
+# Utilities
+python-dateutil>=2.8.0
+requests>=2.31.0
+tqdm>=4.65.0

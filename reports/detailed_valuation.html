@@ -1,0 +1,798 @@
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحلیل تفصیلی ارزشگذاری</title>
+    <style>
+        body { font-family: Tahoma, Arial; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 10px; }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #e74c3c; margin-top: 30px; }
+        h3 { color: #27ae60; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: right; border: 1px solid #ddd; }
+        th { background: #34495e; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .positive { color: green; font-weight: bold; }
+        .negative { color: red; font-weight: bold; }
+        .warning { background: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-right: 5px solid #ffc107; }
+        .info { background: #d1ecf1; padding: 15px; border-radius: 5px; margin: 15px 0; border-right: 5px solid #17a2b8; }
+        .method-box { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; border-right: 4px solid #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 تحلیل تفصیلی ارزشگذاری</h1>
+        
+        <div class="warning">
+            <strong>⚠️ توجه مهم:</strong> ارزشگذاری بنیادی با قیمت بازار متفاوت است.
+            بازار تحت تأثیر عوامل روانی، سیاسی، و انتظارات آینده قرار دارد.
+            این ارزشگذاری‌ها بر اساس داده‌های مالی تاریخی و مفروضات محافظه‌کارانه محاسبه شده‌اند.
+        </div>
+
+        <h2>🏢 زفجر</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 900,000,000<br>
+            قیمت فعلی: 21,550 ریال<br>
+            ارزش بازار: 19,395,000 میلیون ریال (19,395.0 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>17,926.9</td>
+                <td>19,919</td>
+                <td class="negative">-7.6%</td>
+                <td>سهم کمی گران - محتاط باشید</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>13,547.3</td>
+                <td>15,053</td>
+                <td class="negative">-30.2%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>10,898.2</td>
+                <td>12,109</td>
+                <td class="negative">-43.8%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <h2>🏢 کاوه</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 61,000,000,000<br>
+            قیمت فعلی: 3,789 ریال<br>
+            ارزش بازار: 231,129,000 میلیون ریال (231,129.0 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>213,533.9</td>
+                <td>3,501</td>
+                <td class="negative">-7.6%</td>
+                <td>سهم کمی گران - محتاط باشید</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>165,883.2</td>
+                <td>2,719</td>
+                <td class="negative">-28.2%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>137,588.4</td>
+                <td>2,256</td>
+                <td class="negative">-40.5%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <h2>🏢 گکوثر</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 3,829,327,000<br>
+            قیمت فعلی: 2,237 ریال<br>
+            ارزش بازار: 8,566,204 میلیون ریال (8,566.2 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>8,335.0</td>
+                <td>2,177</td>
+                <td class="negative">-2.7%</td>
+                <td>سهم کمی گران - محتاط باشید</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>6,296.7</td>
+                <td>1,644</td>
+                <td class="negative">-26.5%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>5,090.0</td>
+                <td>1,329</td>
+                <td class="negative">-40.6%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <h2>🏢 رنیک</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 5,650,000,000<br>
+            قیمت فعلی: 18,620 ریال<br>
+            ارزش بازار: 105,203,000 میلیون ریال (105,203.0 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>40,311.9</td>
+                <td>7,135</td>
+                <td class="negative">-61.7%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>30,570.6</td>
+                <td>5,411</td>
+                <td class="negative">-70.9%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>24,836.4</td>
+                <td>4,396</td>
+                <td class="negative">-76.4%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <h2>🏢 قشیر</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 778,872,000<br>
+            قیمت فعلی: 8,780 ریال<br>
+            ارزش بازار: 6,838,496 میلیون ریال (6,838.5 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>3,236.9</td>
+                <td>4,156</td>
+                <td class="negative">-52.7%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>2,603.6</td>
+                <td>3,343</td>
+                <td class="negative">-61.9%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>2,216.3</td>
+                <td>2,846</td>
+                <td class="negative">-67.6%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <h2>🏢 زدشت</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 690,000,000<br>
+            قیمت فعلی: 30,450 ریال<br>
+            ارزش بازار: 21,010,500 میلیون ریال (21,010.5 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>17,559.0</td>
+                <td>25,448</td>
+                <td class="negative">-16.4%</td>
+                <td>سهم کمی گران - محتاط باشید</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>13,193.3</td>
+                <td>19,121</td>
+                <td class="negative">-37.2%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>10,585.9</td>
+                <td>15,342</td>
+                <td class="negative">-49.6%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <h2>🏢 وسنا</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 3,458,607,000<br>
+            قیمت فعلی: 13,370 ریال<br>
+            ارزش بازار: 46,241,576 میلیون ریال (46,241.6 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>7,231.5</td>
+                <td>2,091</td>
+                <td class="negative">-84.4%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>7,086.2</td>
+                <td>2,049</td>
+                <td class="negative">-84.7%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>7,001.1</td>
+                <td>2,024</td>
+                <td class="negative">-84.9%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <h2>🏢 کگاز</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 850,000,000<br>
+            قیمت فعلی: 28,350 ریال<br>
+            ارزش بازار: 24,097,500 میلیون ریال (24,097.5 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>27,057.1</td>
+                <td>31,832</td>
+                <td class="positive">+12.3%</td>
+                <td>سهم نزدیک به ارزش ذاتی</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>20,544.8</td>
+                <td>24,170</td>
+                <td class="negative">-14.7%</td>
+                <td>سهم کمی گران - محتاط باشید</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>16,590.8</td>
+                <td>19,519</td>
+                <td class="negative">-31.2%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <h2>🏢 تلیسه</h2>
+        
+        <div class="info">
+            <strong>اطلاعات پایه:</strong><br>
+            تعداد سهام: 4,993,940,000<br>
+            قیمت فعلی: 4,320 ریال<br>
+            ارزش بازار: 21,573,821 میلیون ریال (21,573.8 میلیارد)
+        </div>
+        
+        <h3>📈 مقایسه سناریوها</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>ارزش کل (میلیارد)</th>
+                <th>ارزش/سهم (ریال)</th>
+                <th>اختلاف با بازار</th>
+                <th>نتیجه</th>
+            </tr>
+
+            <tr>
+                <td><strong>خوشبینانه</strong></td>
+                <td>17,379.2</td>
+                <td>3,480</td>
+                <td class="negative">-19.4%</td>
+                <td>سهم کمی گران - محتاط باشید</td>
+            </tr>
+
+            <tr>
+                <td><strong>خنثی</strong></td>
+                <td>12,938.1</td>
+                <td>2,591</td>
+                <td class="negative">-40.0%</td>
+                <td>سهم گران - ریسک بالا</td>
+            </tr>
+
+            <tr>
+                <td><strong>بدبینانه</strong></td>
+                <td>10,329.1</td>
+                <td>2,068</td>
+                <td class="negative">-52.1%</td>
+                <td>سهم بسیار گران - احتمال حباب</td>
+            </tr>
+
+        </table>
+        
+        <h3>🎯 روش‌های ارزشگذاری استفاده شده</h3>
+        
+        <div class="method-box">
+            <strong>1. DCF (Discounted Cash Flow):</strong> جریان نقدی آزاد تنزیل شده<br>
+            وزن: 30% | مناسب برای: شرکت‌های با جریان نقدی پایدار
+        </div>
+        
+        <div class="method-box">
+            <strong>2. P/E Multiple:</strong> ضریب قیمت به سود<br>
+            وزن: 15% | مناسب برای: مقایسه با شرکت‌های مشابه
+        </div>
+        
+        <div class="method-box">
+            <strong>3. P/B Multiple:</strong> ضریب قیمت به ارزش دفتری<br>
+            وزن: 15% | مناسب برای: شرکت‌های با دارایی‌های محسوس
+        </div>
+        
+        <div class="method-box">
+            <strong>4. EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی<br>
+            وزن: 10% | مناسب برای: مقایسه شرکت‌های با ساختار سرمایه متفاوت
+        </div>
+        
+        <div class="method-box">
+            <strong>5. P/S Multiple:</strong> ضریب قیمت به فروش<br>
+            وزن: 5% | مناسب برای: شرکت‌های کم‌سود یا زیان‌ده
+        </div>
+        
+        <div class="method-box">
+            <strong>6. RIM (Residual Income Model):</strong> مدل درآمد باقیمانده<br>
+            وزن: 20% | مناسب برای: ارزشگذاری مبتنی بر ROE و ارزش افزوده اقتصادی
+        </div>
+        
+        <div class="method-box">
+            <strong>7. APV (Adjusted Present Value):</strong> ارزش فعلی تعدیل شده<br>
+            وزن: 5% | مناسب برای: شرکت‌های با اهرم مالی بالا
+        </div>
+
+        <hr>
+        
+        <h2>💡 نکات کلیدی</h2>
+        <div class="info">
+            <ul>
+                <li><strong>تفاوت با بازار طبیعی است:</strong> قیمت بازار شامل انتظارات آینده، ریسک‌های سیاسی، و عوامل روانی است</li>
+                <li><strong>محافظه‌کاری مدل:</strong> ارزشگذاری بنیادی معمولاً محافظه‌کارانه است و حاشیه امنیت دارد</li>
+                <li><strong>نقش کیفی:</strong> کیفیت مدیریت، برند، موقعیت رقابتی در مدل لحاظ نمی‌شود</li>
+                <li><strong>تورم و رشد:</strong> مدل فرض می‌کند رشد محدود است (طبق GDP)</li>
+                <li><strong>چند روش بهتر از یک روش:</strong> استفاده از 7 روش مختلف اعتماد بیشتری ایجاد می‌کند</li>
+            </ul>
+        </div>
+        
+        <h2>📋 نتیجه‌گیری</h2>
+        <div class="warning">
+
+            <strong>خلاصه تحلیل 9 نماد:</strong><br>
+            • سهام بیش‌ارزش (گران): 9 نماد<br>
+            • سهام کم‌ارزش (ارزان): 0 نماد<br>
+            <br>
+            <strong>توصیه کلی:</strong> بازار ایران در حال حاضر تمایل به بیش‌ارزشی دارد.
+            برای سرمایه‌گذاری محتاطانه، به سهامی با اختلاف کمتر از 20% توجه کنید.
+        </div>
+    </div>
+</body>
+</html>

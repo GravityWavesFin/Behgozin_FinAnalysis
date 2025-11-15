@@ -1,0 +1,20 @@
+
+======================================================================
+Complete Analysis with Valuation
+======================================================================
+
+======================================================================
+Traceback (most recent call last):
+  File "E:\Shakour\BehgozinProjects\Behgozin_FinAnalysis\run_complete_analysis.py", line 300, in <module>
+    main()
+    ~~~~^^
+  File "E:\Shakour\BehgozinProjects\Behgozin_FinAnalysis\run_complete_analysis.py", line 280, in main
+    source_results[symbol] = analyze_company(symbol, price_data[symbol])
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Shakour\BehgozinProjects\Behgozin_FinAnalysis\run_complete_analysis.py", line 28, in analyze_company
+    print(f"Analyzing {symbol}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 10-13: character maps to <undefined>

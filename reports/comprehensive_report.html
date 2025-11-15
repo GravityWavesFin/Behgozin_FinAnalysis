@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گزارش تحلیل جامع - امکان‌سنجی تخصیص منابع</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @media print {
+            .page-break { page-break-before: always; }
+            @page { size: A4; margin: 2cm; }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .header .date {
+            color: #95a5a6;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .section {
+            margin: 30px 0;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .subsection-title {
+            background: #ecf0f1;
+            padding: 10px 15px;
+            border-right: 4px solid #3498db;
+            font-size: 18px;
+            margin: 20px 0 15px 0;
+            color: #2c3e50;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-right: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-right: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-right: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .assumptions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .assumptions h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .assumptions ul {
+            list-style-position: inside;
+            color: #555;
+        }
+        
+        .assumptions li {
+            margin: 8px 0;
+        }
+        
+        .comparison-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .comparison-header {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .comparison-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .detail-item {
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .positive { color: #28a745; font-weight: bold; }
+        .negative { color: #dc3545; font-weight: bold; }
+        .neutral { color: #6c757d; font-weight: bold; }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>گزارش تحلیل جامع سرمایه‌گذاری</h1>
+            <div class="subtitle">امکان‌سنجی تخصیص منابع نقد - تحلیل بنیادی و تکنیکال</div>
+            <div class="date">تاریخ: 2025-11-15 16:51</div>
+        </div>
+
+        <div class="section page-break">
+            <div class="section-title">📊 خلاصه اجرایی</div>
+            
+            <div class="info-box">
+                <h3>سوال اصلی:</h3>
+                <p>با پول نقد اضافی که برای سرمایه‌گذاری داریم، کدام گزینه بهتر است؟</p>
+            </div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">گزینه 1: سرمایه‌گذاری در</div>
+                    <div class="metric-value">3 نماد</div>
+                    <div class="metric-label">زفجر، کاوه، گکوثر</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">گزینه 2: سرمایه‌گذاری در</div>
+                    <div class="metric-value">6 نماد</div>
+                    <div class="metric-label">رنیک، قشیر، زدشت، وسنا، کگاز، تلیسه</div>
+                </div>
+            </div>
+
+            <div class="subsection-title">نتیجه مقایسه</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>گزینه</th>
+                        <th>نمادها</th>
+                        <th>میانگین بازده 3 ماهه</th>
+                        <th>میانگین امتیاز</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>گزینه 1</td>
+                        <td>زفجر، کاوه، گکوثر</td>
+                        <td class="neutral">-17.75%</td>
+                        <td>65.7/100</td>
+                    </tr>
+                    <tr>
+                        <td>گزینه 2</td>
+                        <td>رنیک، قشیر، زدشت، وسنا، کگاز، تلیسه</td>
+                        <td class="positive">-16.50%</td>
+                        <td>60.3/100</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="success-box">
+                <h3>✅ توصیه نهایی</h3>
+                <p><strong>اختلاف بازده: +1.25%</strong></p>
+
+                <p>تفاوت معناداری بین دو گزینه وجود ندارد. می‌توانید ترکیبی از هر دو را انتخاب کنید تا ریسک را کاهش دهید.</p>
+
+            </div>
+        </div>
+
+        <div class="section page-break">
+            <div class="section-title">📈 تحلیل تفصیلی هر نماد</div>
+
+            <div class="subsection-title">زفجر</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">21,550</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">17,477</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-18.90%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">66.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>70/100</strong> (رتبه: B)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>60/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>40.68%</td>
+                        <td>روند</td>
+                        <td>خنثی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>35.60%</td>
+                        <td>RSI</td>
+                        <td>72.7</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>24.96%</td>
+                        <td>نسبت به MA20</td>
+                        <td>20,211</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>29.43%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>8.5%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> متوسط | <strong>سطح ریسک:</strong> متوسط</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>17,926.9</td>
+                        <td>19,919</td>
+                        <td>21,550</td>
+                        <td class="negative">-7.6%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>13,547.3</td>
+                        <td>15,053</td>
+                        <td>21,550</td>
+                        <td class="negative">-30.2%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>10,898.2</td>
+                        <td>12,109</td>
+                        <td>21,550</td>
+                        <td class="negative">-43.8%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+            <div class="subsection-title">کاوه</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">3,789</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">3,104</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-18.07%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">68.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>60/100</strong> (رتبه: B)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>80/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>21.97%</td>
+                        <td>روند</td>
+                        <td>صعودی قوی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>10.84%</td>
+                        <td>RSI</td>
+                        <td>73.9</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>9.93%</td>
+                        <td>نسبت به MA20</td>
+                        <td>3,592</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>1.78%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>4.5%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> متوسط | <strong>سطح ریسک:</strong> متوسط</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>213,533.9</td>
+                        <td>3,501</td>
+                        <td>3,789</td>
+                        <td class="negative">-7.6%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>165,883.2</td>
+                        <td>2,719</td>
+                        <td>3,789</td>
+                        <td class="negative">-28.2%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>137,588.4</td>
+                        <td>2,256</td>
+                        <td>3,789</td>
+                        <td class="negative">-40.5%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+            <div class="subsection-title">گکوثر</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">2,237</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">1,873</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-16.29%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">63.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>65/100</strong> (رتبه: B)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>60/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>18.25%</td>
+                        <td>روند</td>
+                        <td>نزولی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>18.10%</td>
+                        <td>RSI</td>
+                        <td>47.3</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>29.19%</td>
+                        <td>نسبت به MA20</td>
+                        <td>2,255</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>11.39%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>1.2%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> متوسط | <strong>سطح ریسک:</strong> متوسط</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>8,335.0</td>
+                        <td>2,177</td>
+                        <td>2,237</td>
+                        <td class="negative">-2.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>6,296.7</td>
+                        <td>1,644</td>
+                        <td>2,237</td>
+                        <td class="negative">-26.5%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>5,090.0</td>
+                        <td>1,329</td>
+                        <td>2,237</td>
+                        <td class="negative">-40.6%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+            <div class="subsection-title">رنیک</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">18,620</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">15,129</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-18.75%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">65.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>45/100</strong> (رتبه: C)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>95/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>10.60%</td>
+                        <td>روند</td>
+                        <td>صعودی قوی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>6.36%</td>
+                        <td>RSI</td>
+                        <td>65.3</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>12.23%</td>
+                        <td>نسبت به MA20</td>
+                        <td>18,032</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>10.19%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>3.1%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> متوسط | <strong>سطح ریسک:</strong> متوسط</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>40,311.9</td>
+                        <td>7,135</td>
+                        <td>18,620</td>
+                        <td class="negative">-61.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>30,570.6</td>
+                        <td>5,411</td>
+                        <td>18,620</td>
+                        <td class="negative">-70.9%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>24,836.4</td>
+                        <td>4,396</td>
+                        <td>18,620</td>
+                        <td class="negative">-76.4%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+            <div class="subsection-title">قشیر</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">8,780</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">7,068</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-19.50%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">70.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>70/100</strong> (رتبه: B)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>70/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>49.92%</td>
+                        <td>روند</td>
+                        <td>نزولی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>17.23%</td>
+                        <td>RSI</td>
+                        <td>26.2</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>3.22%</td>
+                        <td>نسبت به MA20</td>
+                        <td>9,418</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>39.31%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>3.0%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> بالا | <strong>سطح ریسک:</strong> متوسط</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>3,236.9</td>
+                        <td>4,156</td>
+                        <td>8,780</td>
+                        <td class="negative">-52.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>2,603.6</td>
+                        <td>3,343</td>
+                        <td>8,780</td>
+                        <td class="negative">-61.9%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>2,216.3</td>
+                        <td>2,846</td>
+                        <td>8,780</td>
+                        <td class="negative">-67.6%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+            <div class="subsection-title">زدشت</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">30,450</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">24,832</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-18.45%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">63.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>65/100</strong> (رتبه: B)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>60/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>28.40%</td>
+                        <td>روند</td>
+                        <td>نزولی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>20.76%</td>
+                        <td>RSI</td>
+                        <td>41.0</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>28.17%</td>
+                        <td>نسبت به MA20</td>
+                        <td>31,488</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>14.36%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>2.3%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> متوسط | <strong>سطح ریسک:</strong> متوسط</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>17,559.0</td>
+                        <td>25,448</td>
+                        <td>30,450</td>
+                        <td class="negative">-16.4%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>13,193.3</td>
+                        <td>19,121</td>
+                        <td>30,450</td>
+                        <td class="negative">-37.2%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>10,585.9</td>
+                        <td>15,342</td>
+                        <td>30,450</td>
+                        <td class="negative">-49.6%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+            <div class="subsection-title">وسنا</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">13,370</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">11,425</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-14.55%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">37.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>25/100</strong> (رتبه: D)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>55/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>0.00%</td>
+                        <td>روند</td>
+                        <td>نزولی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>0.00%</td>
+                        <td>RSI</td>
+                        <td>38.0</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>10.00%</td>
+                        <td>نسبت به MA20</td>
+                        <td>14,302</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>0.48%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>3.3%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> پایین | <strong>سطح ریسک:</strong> پایین</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>7,231.5</td>
+                        <td>2,091</td>
+                        <td>13,370</td>
+                        <td class="negative">-84.4%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>7,086.2</td>
+                        <td>2,049</td>
+                        <td>13,370</td>
+                        <td class="negative">-84.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>7,001.1</td>
+                        <td>2,024</td>
+                        <td>13,370</td>
+                        <td class="negative">-84.9%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+            <div class="subsection-title">کگاز</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">28,350</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">25,800</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-8.99%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">62.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>60/100</strong> (رتبه: B)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>65/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>43.95%</td>
+                        <td>روند</td>
+                        <td>خنثی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>20.57%</td>
+                        <td>RSI</td>
+                        <td>30.5</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>24.25%</td>
+                        <td>نسبت به MA20</td>
+                        <td>29,416</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>40.01%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>5.1%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> متوسط | <strong>سطح ریسک:</strong> پایین</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>27,057.1</td>
+                        <td>31,832</td>
+                        <td>28,350</td>
+                        <td class="positive">+12.3%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>20,544.8</td>
+                        <td>24,170</td>
+                        <td>28,350</td>
+                        <td class="negative">-14.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>16,590.8</td>
+                        <td>19,519</td>
+                        <td>28,350</td>
+                        <td class="negative">-31.2%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+            <div class="subsection-title">تلیسه</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">قیمت فعلی</div>
+                    <div class="metric-value">4,320</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">قیمت هدف 3 ماهه</div>
+                    <div class="metric-value">3,510</div>
+                    <div class="metric-label">ریال</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">بازده پیش‌بینی</div>
+                    <div class="metric-value negative">-18.75%</div>
+                    <div class="metric-label">3 ماهه</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">امتیاز کلی</div>
+                    <div class="metric-value">65.0/100</div>
+                    <div class="metric-label">فروش</div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">تحلیل بنیادی</th>
+                        <th colspan="2">تحلیل تکنیکال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>امتیاز بنیادی</td>
+                        <td><strong>45/100</strong> (رتبه: C)</td>
+                        <td>امتیاز تکنیکال</td>
+                        <td><strong>95/100</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>7.52%</td>
+                        <td>روند</td>
+                        <td>صعودی قوی</td>
+                    </tr>
+                    <tr>
+                        <td>ROA</td>
+                        <td>7.35%</td>
+                        <td>RSI</td>
+                        <td>63.2</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص</td>
+                        <td>30.04%</td>
+                        <td>نسبت به MA20</td>
+                        <td>4,128</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی</td>
+                        <td>1.66%</td>
+                        <td>نوسان (20 روزه)</td>
+                        <td>5.4%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>اطمینان:</strong> متوسط | <strong>سطح ریسک:</strong> متوسط</p>
+            </div>
+            
+            <div class="subsection-title">ارزش‌گذاری</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>سناریو</th>
+                        <th>ارزش کل شرکت (میلیارد ریال)</th>
+                        <th>ارزش هر سهم (ریال)</th>
+                        <th>قیمت فعلی (ریال)</th>
+                        <th>اختلاف</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>خوشبینانه</strong></td>
+                        <td>17,379.2</td>
+                        <td>3,480</td>
+                        <td>4,320</td>
+                        <td class="negative">-19.4%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>خنثی</strong></td>
+                        <td>12,938.1</td>
+                        <td>2,591</td>
+                        <td>4,320</td>
+                        <td class="negative">-40.0%</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>بدبینانه</strong></td>
+                        <td>10,329.1</td>
+                        <td>2,068</td>
+                        <td>4,320</td>
+                        <td class="negative">-52.1%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <p><strong>نحوه محاسبه:</strong> ارزش هر سهم = (ارزش کل شرکت) ÷ (تعداد سهام منتشر شده). ارزش کل شرکت بر اساس 6 روش مختلف (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) و میانگین وزنی آنها محاسبه شده است.</p>
+            </div>
+
+        </div>
+
+        <div class="section page-break">
+            <div class="section-title">🔄 مقایسه‌های تک‌به‌تک (18 حالت)</div>
+            <p style="margin-bottom: 20px;">در این بخش، هر یک از 3 نماد اصلی با 6 نماد جایگزین مقایسه می‌شود.</p>
+
+            <div class="subsection-title">به جای زفجر کدام نماد را بخریم؟</div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>نماد جایگزین</th>
+                        <th>بازده منبع</th>
+                        <th>بازده هدف</th>
+                        <th>اختلاف</th>
+                        <th>امتیاز بنیادی</th>
+                        <th>امتیاز تکنیکال</th>
+                        <th>تصمیم</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>رنیک</strong></td>
+                        <td>-18.90%</td>
+                        <td>-18.75%</td>
+                        <td class="positive">+0.15%</td>
+                        <td>70 → 45</td>
+                        <td>60 → 95</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>قشیر</strong></td>
+                        <td>-18.90%</td>
+                        <td>-19.50%</td>
+                        <td class="negative">-0.60%</td>
+                        <td>70 → 70</td>
+                        <td>60 → 70</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>زدشت</strong></td>
+                        <td>-18.90%</td>
+                        <td>-18.45%</td>
+                        <td class="positive">+0.45%</td>
+                        <td>70 → 65</td>
+                        <td>60 → 60</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>وسنا</strong></td>
+                        <td>-18.90%</td>
+                        <td>-14.55%</td>
+                        <td class="positive">+4.35%</td>
+                        <td>70 → 25</td>
+                        <td>60 → 55</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>کگاز</strong></td>
+                        <td>-18.90%</td>
+                        <td>-8.99%</td>
+                        <td class="positive">+9.91%</td>
+                        <td>70 → 60</td>
+                        <td>60 → 65</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>تلیسه</strong></td>
+                        <td>-18.90%</td>
+                        <td>-18.75%</td>
+                        <td class="positive">+0.15%</td>
+                        <td>70 → 45</td>
+                        <td>60 → 95</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="subsection-title">به جای کاوه کدام نماد را بخریم؟</div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>نماد جایگزین</th>
+                        <th>بازده منبع</th>
+                        <th>بازده هدف</th>
+                        <th>اختلاف</th>
+                        <th>امتیاز بنیادی</th>
+                        <th>امتیاز تکنیکال</th>
+                        <th>تصمیم</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>رنیک</strong></td>
+                        <td>-18.07%</td>
+                        <td>-18.75%</td>
+                        <td class="negative">-0.68%</td>
+                        <td>60 → 45</td>
+                        <td>80 → 95</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>قشیر</strong></td>
+                        <td>-18.07%</td>
+                        <td>-19.50%</td>
+                        <td class="negative">-1.43%</td>
+                        <td>60 → 70</td>
+                        <td>80 → 70</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>زدشت</strong></td>
+                        <td>-18.07%</td>
+                        <td>-18.45%</td>
+                        <td class="negative">-0.38%</td>
+                        <td>60 → 65</td>
+                        <td>80 → 60</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>وسنا</strong></td>
+                        <td>-18.07%</td>
+                        <td>-14.55%</td>
+                        <td class="positive">+3.52%</td>
+                        <td>60 → 25</td>
+                        <td>80 → 55</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>کگاز</strong></td>
+                        <td>-18.07%</td>
+                        <td>-8.99%</td>
+                        <td class="positive">+9.07%</td>
+                        <td>60 → 60</td>
+                        <td>80 → 65</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>تلیسه</strong></td>
+                        <td>-18.07%</td>
+                        <td>-18.75%</td>
+                        <td class="negative">-0.68%</td>
+                        <td>60 → 45</td>
+                        <td>80 → 95</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="subsection-title">به جای گکوثر کدام نماد را بخریم؟</div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>نماد جایگزین</th>
+                        <th>بازده منبع</th>
+                        <th>بازده هدف</th>
+                        <th>اختلاف</th>
+                        <th>امتیاز بنیادی</th>
+                        <th>امتیاز تکنیکال</th>
+                        <th>تصمیم</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>رنیک</strong></td>
+                        <td>-16.29%</td>
+                        <td>-18.75%</td>
+                        <td class="negative">-2.46%</td>
+                        <td>65 → 45</td>
+                        <td>60 → 95</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>قشیر</strong></td>
+                        <td>-16.29%</td>
+                        <td>-19.50%</td>
+                        <td class="negative">-3.21%</td>
+                        <td>65 → 70</td>
+                        <td>60 → 70</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>زدشت</strong></td>
+                        <td>-16.29%</td>
+                        <td>-18.45%</td>
+                        <td class="negative">-2.16%</td>
+                        <td>65 → 65</td>
+                        <td>60 → 60</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>وسنا</strong></td>
+                        <td>-16.29%</td>
+                        <td>-14.55%</td>
+                        <td class="positive">+1.74%</td>
+                        <td>65 → 25</td>
+                        <td>60 → 55</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>کگاز</strong></td>
+                        <td>-16.29%</td>
+                        <td>-8.99%</td>
+                        <td class="positive">+7.30%</td>
+                        <td>65 → 60</td>
+                        <td>60 → 65</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>تلیسه</strong></td>
+                        <td>-16.29%</td>
+                        <td>-18.75%</td>
+                        <td class="negative">-2.46%</td>
+                        <td>65 → 45</td>
+                        <td>60 → 95</td>
+                        <td>⚖️ تقریباً برابر</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="section page-break">
+            <div class="section-title">📊 نمودارها</div>
+            
+            <div class="chart-container">
+                <canvas id="returnsChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="scoresChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section page-break">
+            <div class="section-title">📋 مفروضات و روش‌شناسی</div>
+            
+            <div class="assumptions">
+                <h4>مفروضات ارزش‌گذاری:</h4>
+                <ul>
+                    <li>نرخ بهره بدون ریسک: 22%</li>
+                    <li>صرف ریسک بازار: 10%</li>
+                    <li>نرخ تورم: 40%</li>
+                    <li>نرخ مالیات شرکتی: 25%</li>
+                    <li>افق زمانی پیش‌بینی: 3 ماه</li>
+                </ul>
+                
+                <h4>روش‌های ارزش‌گذاری استفاده شده:</h4>
+                <ul>
+                    <li><strong>DCF:</strong> جریان نقدی آزاد تنزیل شده</li>
+                    <li><strong>P/E:</strong> نسبت قیمت به سود (ضریب صنعت: 8x)</li>
+                    <li><strong>P/B:</strong> نسبت قیمت به ارزش دفتری</li>
+                    <li><strong>EV/EBITDA:</strong> ارزش شرکت به سود عملیاتی (ضریب: 6x)</li>
+                    <li><strong>P/S:</strong> نسبت قیمت به فروش (ضریب: 1.5x)</li>
+                    <li><strong>RIM:</strong> مدل درآمد باقیمانده</li>
+                </ul>
+                
+                <h4>تحلیل بنیادی:</h4>
+                <ul>
+                    <li>سودآوری: ROE, ROA, حاشیه سود خالص و عملیاتی (40% از امتیاز)</li>
+                    <li>اهرم مالی: نسبت بدهی، نسبت بدهی به حقوق صاحبان سهام (20%)</li>
+                    <li>کارایی: گردش دارایی‌ها (20%)</li>
+                    <li>نقدینگی: نسبت نقدی (20%)</li>
+                </ul>
+                
+                <h4>تحلیل تکنیکال:</h4>
+                <ul>
+                    <li>میانگین‌های متحرک: MA10, MA20, MA50</li>
+                    <li>شاخص قدرت نسبی (RSI): دوره 14 روزه</li>
+                    <li>تشخیص روند: بر اساس موقعیت نسبی قیمت و MA</li>
+                    <li>نوسان: انحراف معیار 20 روزه</li>
+                    <li>سطوح حمایت و مقاومت</li>
+                </ul>
+                
+                <h4>محاسبه بازده پیش‌بینی 3 ماهه:</h4>
+                <ul>
+                    <li>بازده ذاتی محدود شده به بازه -30% تا +50%</li>
+                    <li>ضریب اطمینان: 0.3 تا 0.8 بر اساس امتیاز کلی</li>
+                    <li>بازده مورد انتظار = بازده محدود شده × ضریب اطمینان</li>
+                    <li>امتیاز کلی = 60% بنیادی + 40% تکنیکال</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>این گزارش با استفاده از تحلیل‌های بنیادی و تکنیکال تهیه شده است.</p>
+            <p>تمامی اعداد و ارقام بر اساس داده‌های مالی منتشر شده شرکت‌ها و قیمت‌های تعدیل شده بازار محاسبه شده‌اند.</p>
+        </div>
+    </div>
+    
+    <script>
+        // داده‌ها برای نمودارها
+
+        const symbols = ["زفجر", "کاوه", "گکوثر", "رنیک", "قشیر", "زدشت", "وسنا", "کگاز", "تلیسه"];
+        const returns = [-18.9, -18.066665679088526, -16.29364022191168, -18.75, -19.499999999999996, -18.45, -14.549999999999999, -8.993194524999275, -18.75];
+        const scores = [66.0, 68.0, 63.0, 65.0, 70.0, 63.0, 37.0, 62.0, 65.0];
+        
+        // نمودار بازده‌ها
+        new Chart(document.getElementById('returnsChart'), {
+            type: 'bar',
+            data: {
+                labels: symbols,
+                datasets: [{
+                    label: 'بازده پیش‌بینی 3 ماهه (%)',
+                    data: returns,
+                    backgroundColor: returns.map(r => r > 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(255, 99, 132, 0.6)'),
+                    borderColor: returns.map(r => r > 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)'),
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'بازده پیش‌بینی 3 ماهه (درصد)',
+                        font: { size: 16 }
+                    },
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'بازده (%)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // نمودار امتیازها
+        new Chart(document.getElementById('scoresChart'), {
+            type: 'radar',
+            data: {
+                labels: symbols,
+                datasets: [{
+                    label: 'امتیاز کلی',
+                    data: scores,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgb(153, 102, 255)',
+                    pointBackgroundColor: 'rgb(153, 102, 255)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(153, 102, 255)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'امتیاز کلی نمادها',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+        
+        // نمودار مقایسه گروهی
+        new Chart(document.getElementById('comparisonChart'), {
+            type: 'bar',
+            data: {
+                labels: ['گزینه 1 (3 نماد)', 'گزینه 2 (6 نماد)'],
+                datasets: [{
+                    label: 'میانگین بازده 3 ماهه (%)',
+                    data: [-17.75, -16.50],
+                    backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(255, 159, 64, 0.6)'],
+                    borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 159, 64, 1)'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'مقایسه دو گزینه سرمایه‌گذاری',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'بازده (%)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

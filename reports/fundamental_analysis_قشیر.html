@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحلیل بنیادی کامل - قشیر</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #2c3e50;
+        }
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        /* Header */
+        .header { 
+            text-align: center; 
+            padding: 30px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+        .header h1 { font-size: 36px; margin-bottom: 10px; }
+        .header .subtitle { font-size: 18px; opacity: 0.9; }
+        .report-date { text-align: center; color: #7f8c8d; margin-top: 10px; }
+        
+        /* Summary Cards */
+        .summary-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin: 30px 0; 
+        }
+        .summary-card { 
+            padding: 25px; 
+            border-radius: 15px; 
+            color: white; 
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        .summary-card:hover { transform: translateY(-5px); }
+        .summary-card.blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .summary-card.green { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .summary-card.purple { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .summary-card.orange { background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%); }
+        .card-title { font-size: 14px; opacity: 0.9; margin-bottom: 10px; }
+        .card-value { font-size: 32px; font-weight: bold; margin: 10px 0; }
+        .card-label { font-size: 12px; opacity: 0.8; }
+        
+        /* Section Headers */
+        h2 { 
+            color: #2c3e50;
+            margin: 40px 0 20px 0;
+            padding: 15px 20px;
+            background: linear-gradient(90deg, #667eea 0%, transparent 100%);
+            border-radius: 10px;
+            border-right: 5px solid #667eea;
+            font-size: 24px;
+        }
+        h3 { 
+            color: #34495e;
+            margin: 30px 0 15px 0;
+            padding: 10px 15px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            border-right: 4px solid #3498db;
+            font-size: 20px;
+        }
+        
+        /* Tables */
+        .table-wrapper { overflow-x: auto; margin: 20px 0; }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; 
+            padding: 15px; 
+            text-align: right; 
+            font-weight: bold;
+            font-size: 16px;
+        }
+        td { 
+            padding: 12px 15px; 
+            border-bottom: 1px solid #ecf0f1;
+            text-align: right;
+        }
+        tr:hover { background: #f8f9fa; }
+        tr:last-child td { border-bottom: none; }
+        .ratio-value { 
+            font-weight: bold; 
+            color: #27ae60; 
+            font-size: 18px;
+        }
+        .ratio-desc { color: #7f8c8d; font-size: 14px; }
+        
+        /* Status Badges */
+        .status-badge { 
+            display: inline-block; 
+            padding: 8px 20px; 
+            border-radius: 25px; 
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .status-excellent { background: #27ae60; color: white; }
+        .status-good { background: #3498db; color: white; }
+        .status-average { background: #f39c12; color: white; }
+        .status-poor { background: #e74c3c; color: white; }
+        
+        /* Valuation Section */
+        .valuation-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+            margin: 20px 0; 
+        }
+        .valuation-card { 
+            background: white;
+            border: 3px solid #3498db;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .valuation-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .valuation-card.optimistic { border-color: #27ae60; }
+        .valuation-card.neutral { border-color: #3498db; }
+        .valuation-card.pessimistic { border-color: #e74c3c; }
+        .valuation-card h4 { 
+            margin: 0 0 15px 0; 
+            font-size: 20px;
+            text-align: center;
+        }
+        .valuation-price { 
+            font-size: 36px; 
+            font-weight: bold; 
+            text-align: center; 
+            margin: 20px 0;
+            color: #2c3e50;
+        }
+        .valuation-diff { 
+            text-align: center; 
+            font-size: 20px; 
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        
+        /* Info Boxes */
+        .info-box { 
+            background: #e8f4f8; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+            border-right: 5px solid #3498db;
+        }
+        .warning-box { 
+            background: #fff3cd; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+            border-right: 5px solid #f39c12;
+        }
+        .success-box { 
+            background: #d4edda; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+            border-right: 5px solid #27ae60;
+        }
+        
+        /* Charts */
+        .chart-container { 
+            background: #f8f9fa; 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin: 20px 0;
+            text-align: center;
+        }
+        .chart-bar { 
+            height: 30px; 
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            margin: 10px 0;
+            position: relative;
+        }
+        .chart-label { 
+            position: absolute; 
+            right: 10px; 
+            top: 50%; 
+            transform: translateY(-50%);
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        .footer { 
+            margin-top: 60px; 
+            padding: 30px; 
+            background: #ecf0f1; 
+            border-radius: 15px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 تحلیل بنیادی جامع</h1>
+            <div class="subtitle">نماد: قشیر</div>
+        </div>
+        <p class="report-date">تاریخ گزارش: 1403/08/25 (نوامبر 2025)</p>
+        
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card blue">
+                <div class="card-title">قیمت فعلی</div>
+                <div class="card-value">8,780</div>
+                <div class="card-label">ریال</div>
+            </div>
+            
+            <div class="summary-card green">
+                <div class="card-title">ارزش بازار</div>
+                <div class="card-value">6,838.5</div>
+                <div class="card-label">میلیارد ریال</div>
+            </div>
+            
+            <div class="summary-card purple">
+                <div class="card-title">تعداد سهام</div>
+                <div class="card-value">778.9</div>
+                <div class="card-label">میلیون سهم</div>
+            </div>
+            
+            <div class="summary-card orange">
+                <div class="card-title">امتیاز کلی</div>
+                <div class="card-value">75.0</div>
+                <div class="card-label">از 100 - رتبه: B</div>
+            </div>
+        </div>
+
+        <h2>💼 اقلام کلیدی صورت‌های مالی</h2>
+        
+        <h3>صورت سود و زیان (Income Statement)</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>شرح</th>
+                        <th>مبلغ (میلیون ریال)</th>
+                        <th>درصد از درآمد</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>درآمد (Revenue)</strong></td>
+                        <td class="ratio-value">8,246,987</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td>سود ناخالص (Gross Profit)</td>
+                        <td class="ratio-value">202,112</td>
+                        <td>2.5%</td>
+                    </tr>
+                    <tr>
+                        <td>سود عملیاتی (Operating Profit)</td>
+                        <td class="ratio-value">161,690</td>
+                        <td>2.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>سود خالص (Net Income)</strong></td>
+                        <td class="ratio-value" style="color: #27ae60;">265,265</td>
+                        <td style="color: #27ae60;">3.2%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <h3>ترازنامه (Balance Sheet)</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>شرح</th>
+                        <th>مبلغ (میلیون ریال)</th>
+                        <th>درصد از کل دارایی</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3" style="background: #ecf0f1; font-weight: bold;">دارایی‌ها (Assets)</td>
+                    </tr>
+                    <tr>
+                        <td>دارایی جاری (Current Assets)</td>
+                        <td class="ratio-value">923,681</td>
+                        <td>60%</td>
+                    </tr>
+                    <tr>
+                        <td>دارایی ثابت (Fixed Assets)</td>
+                        <td class="ratio-value">615,787</td>
+                        <td>40%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>جمع دارایی‌ها (Total Assets)</strong></td>
+                        <td class="ratio-value">1,539,468</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="background: #ecf0f1; font-weight: bold;">بدهی‌ها و حقوق صاحبان سهام</td>
+                    </tr>
+                    <tr>
+                        <td>بدهی جاری (Current Liabilities)</td>
+                        <td class="ratio-value">423,592</td>
+                        <td>27.5%</td>
+                    </tr>
+                    <tr>
+                        <td>بدهی بلندمدت (Long-term Debt)</td>
+                        <td class="ratio-value">181,539</td>
+                        <td>11.8%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>حقوق صاحبان سهام (Equity)</strong></td>
+                        <td class="ratio-value" style="color: #27ae60;">531,375</td>
+                        <td style="color: #27ae60;">34.5%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📈 نسبت‌های سودآوری (Profitability Ratios)</h2>
+        <div class="status-badge status-excellent">عالی - امتیاز: 90/100</div>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نسبت</th>
+                        <th>مقدار</th>
+                        <th>توضیح</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>بازده حقوق صاحبان سهام (ROE)</td>
+                        <td class="ratio-value">49.92%</td>
+                        <td class="ratio-desc">سود خالص / حقوق صاحبان سهام</td>
+                    </tr>
+                    <tr>
+                        <td>بازده دارایی‌ها (ROA)</td>
+                        <td class="ratio-value">17.23%</td>
+                        <td class="ratio-desc">سود خالص / کل دارایی‌ها</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود خالص (Net Margin)</td>
+                        <td class="ratio-value">3.22%</td>
+                        <td class="ratio-desc">سود خالص / درآمد</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه سود عملیاتی (Operating Margin)</td>
+                        <td class="ratio-value">1.96%</td>
+                        <td class="ratio-desc">سود عملیاتی / درآمد</td>
+                    </tr>
+                    <tr>
+                        <td>حاشیه EBITDA</td>
+                        <td class="ratio-value">2.35%</td>
+                        <td class="ratio-desc">EBITDA / درآمد</td>
+                    </tr>
+                    <tr>
+                        <td>بازده سرمایه به‌کار گرفته شده (ROIC)</td>
+                        <td class="ratio-value">10.67%</td>
+                        <td class="ratio-desc">NOPAT / سرمایه سرمایه‌گذاری</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>💧 نسبت‌های نقدینگی (Liquidity Ratios)</h2>
+        <div class="status-badge status-excellent">عالی - امتیاز: 90/100</div>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نسبت</th>
+                        <th>مقدار</th>
+                        <th>توضیح</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>نسبت جاری (Current Ratio)</td>
+                        <td class="ratio-value">2.18</td>
+                        <td class="ratio-desc">دارایی جاری / بدهی جاری (بهینه: >1.5)</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت آنی (Quick Ratio)</td>
+                        <td class="ratio-value">1.74</td>
+                        <td class="ratio-desc">(دارایی جاری - موجودی) / بدهی جاری</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت نقدی (Cash Ratio)</td>
+                        <td class="ratio-value">2.08</td>
+                        <td class="ratio-desc">وجه نقد / بدهی جاری</td>
+                    </tr>
+                    <tr>
+                        <td>سرمایه در گردش (Working Capital)</td>
+                        <td class="ratio-value">500,089M</td>
+                        <td class="ratio-desc">دارایی جاری - بدهی جاری</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت وجه نقد به دارایی</td>
+                        <td class="ratio-value">57.33%</td>
+                        <td class="ratio-desc">وجه نقد / کل دارایی</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>⚖️ نسبت‌های اهرمی (Leverage Ratios)</h2>
+        <div class="status-badge status-poor">ضعیف - امتیاز: 30/100</div>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نسبت</th>
+                        <th>مقدار</th>
+                        <th>توضیح</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>نسبت بدهی به حقوق صاحبان سهام (D/E)</td>
+                        <td class="ratio-value">1.14</td>
+                        <td class="ratio-desc">کل بدهی / حقوق صاحبان سهام (بهینه: <1)</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی (Debt Ratio)</td>
+                        <td class="ratio-value">39.31%</td>
+                        <td class="ratio-desc">کل بدهی / کل دارایی</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت حقوق صاحبان سهام (Equity Ratio)</td>
+                        <td class="ratio-value">34.52%</td>
+                        <td class="ratio-desc">حقوق صاحبان سهام / کل دارایی</td>
+                    </tr>
+                    <tr>
+                        <td>ضریب اهرم (Leverage Multiplier)</td>
+                        <td class="ratio-value">2.90</td>
+                        <td class="ratio-desc">کل دارایی / حقوق صاحبان سهام</td>
+                    </tr>
+                    <tr>
+                        <td>نسبت بدهی به EBITDA</td>
+                        <td class="ratio-value">3.12</td>
+                        <td class="ratio-desc">کل بدهی / EBITDA</td>
+                    </tr>
+                    <tr>
+                        <td>پوشش بهره (Interest Coverage)</td>
+                        <td class="ratio-value">2.14x</td>
+                        <td class="ratio-desc">EBIT / هزینه بهره</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>⚡ نسبت‌های کارایی (Efficiency Ratios)</h2>
+        <div class="status-badge status-excellent">عالی - امتیاز: 90/100</div>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نسبت</th>
+                        <th>مقدار</th>
+                        <th>توضیح</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>گردش دارایی (Asset Turnover)</td>
+                        <td class="ratio-value">5.36x</td>
+                        <td class="ratio-desc">درآمد / کل دارایی</td>
+                    </tr>
+                    <tr>
+                        <td>گردش حقوق صاحبان سهام (Equity Turnover)</td>
+                        <td class="ratio-value">15.52x</td>
+                        <td class="ratio-desc">درآمد / حقوق صاحبان سهام</td>
+                    </tr>
+                    <tr>
+                        <td>گردش دارایی ثابت (Fixed Asset Turnover)</td>
+                        <td class="ratio-value">13.39x</td>
+                        <td class="ratio-desc">درآمد / دارایی ثابت</td>
+                    </tr>
+                    <tr>
+                        <td>گردش سرمایه در گردش</td>
+                        <td class="ratio-value">16.49x</td>
+                        <td class="ratio-desc">درآمد / سرمایه در گردش</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📊 نسبت‌های بازار (Market Ratios)</h2>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>نسبت</th>
+                        <th>مقدار</th>
+                        <th>توضیح</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>سود هر سهم (EPS)</td>
+                        <td class="ratio-value">341 ریال</td>
+                        <td class="ratio-desc">سود خالص / تعداد سهام</td>
+                    </tr>
+                    <tr>
+                        <td>ارزش دفتری هر سهم (Book Value)</td>
+                        <td class="ratio-value">682 ریال</td>
+                        <td class="ratio-desc">حقوق صاحبان سهام / تعداد سهام</td>
+                    </tr>
+                    <tr>
+                        <td>فروش هر سهم (Sales per Share)</td>
+                        <td class="ratio-value">10,588 ریال</td>
+                        <td class="ratio-desc">درآمد / تعداد سهام</td>
+                    </tr>
+                    <tr>
+                        <td>EBITDA هر سهم</td>
+                        <td class="ratio-value">249 ریال</td>
+                        <td class="ratio-desc">EBITDA / تعداد سهام</td>
+                    </tr>
+                    <tr>
+                        <td>P/B فعلی</td>
+                        <td class="ratio-value">12.87</td>
+                        <td class="ratio-desc">قیمت / ارزش دفتری</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>💰 ارزشگذاری (Valuation) - 6 روش در 3 سناریو</h2>
+        
+        <div class="info-box" style="margin-bottom: 20px;">
+            <strong>⚖️ وزن‌های روش‌ها:</strong> 
+            DCF: 30% • RIM: 20% • P/E: 15% • P/B: 15% • EV/EBITDA: 10% • P/S: 5%
+        </div>
+        
+        <div class="valuation-grid">
+
+            <div class="valuation-card optimistic">
+                <h4>سناریو خوشبینانه</h4>
+                <table style="width: 100%; font-size: 13px;">
+                    <tr>
+                        <td>DCF <span style="opacity: 0.6;">(30%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">4,819 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>RIM <span style="opacity: 0.6;">(20%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">4,277 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/E <span style="opacity: 0.6;">(15%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">2,725 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/B <span style="opacity: 0.6;">(15%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">1,892 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>EV/EBITDA <span style="opacity: 0.6;">(10%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">1,602 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/S <span style="opacity: 0.6;">(5%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">15,883 ریال</td>
+                    </tr>
+                </table>
+                <div class="valuation-price">
+                    میانگین وزنی: 4,156 ریال
+                </div>
+                <div class="valuation-diff negative">
+                    -52.7% از قیمت فعلی
+                </div>
+            </div>
+
+            <div class="valuation-card neutral">
+                <h4>سناریو خنثی</h4>
+                <table style="width: 100%; font-size: 13px;">
+                    <tr>
+                        <td>DCF <span style="opacity: 0.6;">(30%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">2,785 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>RIM <span style="opacity: 0.6;">(20%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">3,608 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/E <span style="opacity: 0.6;">(15%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">2,725 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/B <span style="opacity: 0.6;">(15%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">1,703 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>EV/EBITDA <span style="opacity: 0.6;">(10%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">1,602 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/S <span style="opacity: 0.6;">(5%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">15,883 ریال</td>
+                    </tr>
+                </table>
+                <div class="valuation-price">
+                    میانگین وزنی: 3,343 ریال
+                </div>
+                <div class="valuation-diff negative">
+                    -61.9% از قیمت فعلی
+                </div>
+            </div>
+
+            <div class="valuation-card pessimistic">
+                <h4>سناریو بدبینانه</h4>
+                <table style="width: 100%; font-size: 13px;">
+                    <tr>
+                        <td>DCF <span style="opacity: 0.6;">(30%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">1,640 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>RIM <span style="opacity: 0.6;">(20%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">3,081 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/E <span style="opacity: 0.6;">(15%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">2,725 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/B <span style="opacity: 0.6;">(15%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">1,548 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>EV/EBITDA <span style="opacity: 0.6;">(10%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">1,602 ریال</td>
+                    </tr>
+                    <tr>
+                        <td>P/S <span style="opacity: 0.6;">(5%)</span></td>
+                        <td style="text-align: left; font-weight: bold;">15,883 ریال</td>
+                    </tr>
+                </table>
+                <div class="valuation-price">
+                    میانگین وزنی: 2,846 ریال
+                </div>
+                <div class="valuation-diff negative">
+                    -67.6% از قیمت فعلی
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="info-box">
+            <strong>💡 توضیح:</strong> ارزش ذاتی (Intrinsic Value) بر اساس 6 روش مختلف و در 3 سناریو محاسبه شده است.
+            اگر میانگین ارزش ذاتی بیشتر از قیمت فعلی باشد، سهم ارزان‌قیمت (Undervalued) و اگر کمتر باشد، گران‌قیمت (Overvalued) است.
+        </div>
+
+        <h2>📉 تحلیل تکنیکال (Technical Analysis)</h2>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>شاخص</th>
+                        <th>مقدار</th>
+                        <th>وضعیت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>روند (Trend)</td>
+                        <td class="ratio-value">نزولی</td>
+                        <td class="ratio-desc">تشخیص روند قیمت</td>
+                    </tr>
+                    <tr>
+                        <td>RSI (14)</td>
+                        <td class="ratio-value">26.2</td>
+                        <td class="ratio-desc">اشباع فروش</td>
+                    </tr>
+                    <tr>
+                        <td>MACD</td>
+                        <td class="ratio-value">0.00</td>
+                        <td class="ratio-desc">سیگنال فروش</td>
+                    </tr>
+                    <tr>
+                        <td>امتیاز تکنیکال</td>
+                        <td class="ratio-value">0/100</td>
+                        <td class="ratio-desc">ارزیابی کلی تکنیکال</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    <div style="margin: 30px 0;">
+        <h2>🔗 تلفیق تحلیل بنیادی و تکنیکال</h2>
+        
+        
+        <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">
+                📊 نمودار تلفیقی - تحلیل بنیادی + تکنیکال
+            </h3>
+            
+            <div style="position: relative; height: 500px;">
+                <canvas id="combinedChart"></canvas>
+            </div>
+            
+            <!-- وضعیت فعلی -->
+            <div style="margin-top: 15px; padding: 15px; background: #c0392b22; 
+                        border-right: 4px solid #c0392b; border-radius: 8px;">
+                <strong>وضعیت فعلی:</strong> ناحیه فروش قوی<br>
+                <small>قیمت بالاتر از 115% سناریو خوشبینانه</small><br>
+                <strong>قیمت فعلی:</strong> 8,780 ریال
+            </div>
+        </div>
+        
+        <script>
+        (function() {
+            const ctx = document.getElementById('combinedChart').getContext('2d');
+            
+            // داده‌های قیمت
+            const dates = ["1404/04/09", "1404/04/10", "1404/04/11", "1404/04/16", "1404/04/17", "1404/04/18", "1404/04/21", "1404/04/22", "1404/04/23", "1404/04/24", "1404/04/25", "1404/04/28", "1404/04/29", "1404/04/30", "1404/04/31", "1404/05/01", "1404/05/04", "1404/05/05", "1404/05/06", "1404/05/07", "1404/05/08", "1404/05/11", "1404/05/12", "1404/05/18", "1404/05/19", "1404/05/20", "1404/05/21", "1404/05/22", "1404/05/25", "1404/05/26", "1404/05/27", "1404/05/28", "1404/05/29", "1404/06/01", "1404/06/03", "1404/06/04", "1404/06/05", "1404/06/08", "1404/06/09", "1404/06/11", "1404/06/12", "1404/06/15", "1404/06/16", "1404/06/17", "1404/06/18", "1404/06/22", "1404/06/23", "1404/06/24", "1404/06/25", "1404/06/26", "1404/06/29", "1404/06/30", "1404/06/31", "1404/07/01", "1404/07/02", "1404/07/05", "1404/07/06", "1404/07/07", "1404/07/08", "1404/07/09", "1404/07/12", "1404/07/13", "1404/07/14", "1404/07/15", "1404/07/16", "1404/07/19", "1404/07/20", "1404/07/21", "1404/07/22", "1404/07/23", "1404/07/26", "1404/07/27", "1404/07/28", "1404/07/29", "1404/07/30", "1404/08/03", "1404/08/04", "1404/08/05", "1404/08/06", "1404/08/07", "1404/08/10", "1404/08/11", "1404/08/12", "1404/08/13", "1404/08/14", "1404/08/17", "1404/08/18", "1404/08/19", "1404/08/20", "1404/08/21"];
+            const prices = [9960, 9740, 9780, 9380, 9160, 9010, 9240, 8950, 9100, 9160, 9360, 9100, 9200, 9070, 8790, 9050, 8980, 8870, 8660, 8540, 8430, 8150, 8010, 8120, 7880, 7730, 7620, 7460, 7760, 7790, 7960, 8160, 8250, 8390, 8010, 8000, 8020, 7990, 8110, 8160, 8220, 8000, 8140, 8310, 8250, 8190, 8400, 8250, 8350, 8090, 8010, 8030, 7980, 7760, 7640, 8010, 8180, 8320, 8050, 7830, 8150, 8250, 8180, 8270, 8220, 8450, 8590, 8800, 8920, 9220, 9480, 9630, 9400, 9330, 9630, 9690, 9780, 9680, 9630, 9430, 9650, 9580, 9700, 9490, 9360, 9090, 9030, 9100, 8900, 8780];
+            
+            // سطوح قیمتی (18 سطح از ارزشگذاری)
+            const levels = [{"price": 1548.0720837313447, "label": "PB (pessimistic)", "scenario": "pessimistic", "is_support": "true"}, {"price": 1601.734302940663, "label": "EV_EBITDA (optimistic)", "scenario": "optimistic", "is_support": "true"}, {"price": 1601.734302940663, "label": "EV_EBITDA (neutral)", "scenario": "neutral", "is_support": "true"}, {"price": 1601.734302940663, "label": "EV_EBITDA (pessimistic)", "scenario": "pessimistic", "is_support": "true"}, {"price": 1639.7966234125834, "label": "DCF (pessimistic)", "scenario": "pessimistic", "is_support": "true"}, {"price": 1702.879292104479, "label": "PB (neutral)", "scenario": "neutral", "is_support": "true"}, {"price": 1892.0881023383101, "label": "PB (optimistic)", "scenario": "optimistic", "is_support": "true"}, {"price": 2724.606867367167, "label": "PE (optimistic)", "scenario": "optimistic", "is_support": "true"}, {"price": 2724.606867367167, "label": "PE (neutral)", "scenario": "neutral", "is_support": "true"}, {"price": 2724.606867367167, "label": "PE (pessimistic)", "scenario": "pessimistic", "is_support": "true"}, {"price": 2785.389590295051, "label": "DCF (neutral)", "scenario": "neutral", "is_support": "true"}, {"price": 3080.636582630213, "label": "RIM (pessimistic)", "scenario": "pessimistic", "is_support": "true"}, {"price": 3608.126138457758, "label": "RIM (neutral)", "scenario": "neutral", "is_support": "true"}, {"price": 4277.3215766595695, "label": "RIM (optimistic)", "scenario": "optimistic", "is_support": "true"}, {"price": 4819.434515980863, "label": "DCF (optimistic)", "scenario": "optimistic", "is_support": "true"}, {"price": 15882.559008412165, "label": "PS (optimistic)", "scenario": "optimistic", "is_support": "false"}, {"price": 15882.559008412165, "label": "PS (neutral)", "scenario": "neutral", "is_support": "false"}, {"price": 15882.559008412165, "label": "PS (pessimistic)", "scenario": "pessimistic", "is_support": "false"}];
+            
+            // ایجاد annotations برای سطوح قیمتی
+            const annotations = {};
+            
+            levels.forEach((level, index) => {
+                const scenario = level.scenario;
+                const color = scenario === 'optimistic' ? 'rgba(39, 174, 96, 0.6)' : 
+                             (scenario === 'neutral' ? 'rgba(52, 152, 219, 0.6)' : 'rgba(231, 76, 60, 0.6)');
+                
+                annotations[`level${index}`] = {
+                    type: 'line',
+                    yMin: level.price,
+                    yMax: level.price,
+                    borderColor: color,
+                    borderWidth: (level.is_support === 'true') ? 2 : 1,
+                    borderDash: (level.is_support === 'true') ? [] : [5, 5],
+                    label: {
+                        content: level.label.split(' ')[0],
+                        enabled: true,
+                        position: 'end',
+                        backgroundColor: color,
+                        color: 'white',
+                        font: { size: 9 }
+                    }
+                };
+            });
+            
+            // خطوط میانگین وزنی
+            annotations['avg_optimistic'] = {
+                type: 'line',
+                yMin: 4155.895048733336,
+                yMax: 4155.895048733336,
+                borderColor: 'rgba(39, 174, 96, 1)',
+                borderWidth: 3,
+                label: {
+                    content: 'میانگین خوشبینانه: 4,156',
+                    enabled: true,
+                    position: 'start',
+                    backgroundColor: 'rgba(39, 174, 96, 1)',
+                    color: 'white'
+                }
+            };
+            
+            annotations['avg_neutral'] = {
+                type: 'line',
+                yMin: 3342.806746753146,
+                yMax: 3342.806746753146,
+                borderColor: 'rgba(52, 152, 219, 1)',
+                borderWidth: 3,
+                label: {
+                    content: 'میانگین خنثی: 3,343',
+                    enabled: true,
+                    position: 'start',
+                    backgroundColor: 'rgba(52, 152, 219, 1)',
+                    color: 'white'
+                }
+            };
+            
+            annotations['avg_pessimistic'] = {
+                type: 'line',
+                yMin: 2845.546870451863,
+                yMax: 2845.546870451863,
+                borderColor: 'rgba(231, 76, 60, 1)',
+                borderWidth: 3,
+                label: {
+                    content: 'میانگین بدبینانه: 2,846',
+                    enabled: true,
+                    position: 'start',
+                    backgroundColor: 'rgba(231, 76, 60, 1)',
+                    color: 'white'
+                }
+            };
+            
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: 'قیمت (قشیر)',
+                            data: prices,
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0,
+                            pointHoverRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'نمودار قیمت با 18 سطح ارزشگذاری بنیادی',
+                            font: { size: 16, family: 'Tahoma' }
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toLocaleString('fa-IR') + ' ریال';
+                                    }
+                                    return label;
+                                },
+                                afterBody: function(context) {
+                                    // نمایش اطلاعات سطوح قیمتی در tooltip
+                                    const yValue = context[0].parsed.y;
+                                    const closestLevels = levels.filter(l => Math.abs(l.price - yValue) < yValue * 0.05);
+                                    if (closestLevels.length > 0) {
+                                        return closestLevels.map(l => l.label).join('\n');
+                                    }
+                                    return '';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: annotations
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'قیمت (ریال)',
+                                font: { size: 14, family: 'Tahoma', weight: 'bold' }
+                            },
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.3)',
+                                lineWidth: 1
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('fa-IR');
+                                },
+                                font: { size: 12 }
+                            }
+                        },
+                        x: {
+                            display: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: { size: 11 }
+                            }
+                        }
+                    }
+                }
+            });
+        })();
+        </script>
+
+        
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    color: white; padding: 30px; border-radius: 15px; margin: 20px 0; text-align: center;">
+            <h3 style="color: white; margin: 0 0 20px 0;">🎯 سیگنال معاملاتی</h3>
+            <div style="font-size: 48px; font-weight: bold; margin: 20px 0;">
+                فروش قوی
+            </div>
+            <div style="font-size: 18px; opacity: 0.9;">
+                سطح اطمینان: 95% | پتانسیل رشد: -61.9%
+            </div>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.3);">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.8;">قیمت هدف</div>
+                        <div style="font-size: 24px; font-weight: bold;">3,343</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.8;">حد ضرر</div>
+                        <div style="font-size: 24px; font-weight: bold;">4,819</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.8;">حد سود</div>
+                        <div style="font-size: 24px; font-weight: bold;">15,883</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <strong>💡 توضیح:</strong> این نمودار 18 سطح قیمتی حاصل از 6 روش ارزشگذاری بنیادی (DCF, P/E, P/B, EV/EBITDA, P/S, RIM) 
+            در 3 سناریو (خوشبینانه، خنثی، بدبینانه) را روی نمودار تکنیکال نمایش می‌دهد. 
+            خطوط سبز (خوشبینانه)، نارنجی (خنثی) و قرمز (بدبینانه) به عنوان سطوح Support/Resistance بنیادی عمل می‌کنند.
+        </div>
+    </div>
+    
+        <h2>🎯 جمع‌بندی و توصیه نهایی</h2>
+        
+        <div style="background: linear-gradient(135deg, #e74c3c 0%, #e74c3cdd 100%); 
+                    color: white; padding: 30px; border-radius: 15px; text-align: center; margin: 20px 0;">
+            <h3 style="color: white; margin: 0 0 15px 0; background: none; padding: 0; border: none;">
+                توصیه سرمایه‌گذاری
+            </h3>
+            <div style="font-size: 36px; font-weight: bold; margin: 20px 0;">
+                فروش (Sell)
+            </div>
+            <div style="font-size: 18px; opacity: 0.9;">
+                پتانسیل رشد: -60.7% | امتیاز بنیادی: 0/100 | امتیاز تکنیکال: 0/100
+            </div>
+        </div>
+        
+        <div class="summary-grid" style="margin-top: 30px;">
+            <div style="background: #3498db; color: white; padding: 20px; border-radius: 10px; text-align: center;">
+                <div style="font-size: 14px; opacity: 0.9;">قیمت فعلی</div>
+                <div style="font-size: 24px; font-weight: bold; margin: 10px 0;">8,780 ریال</div>
+            </div>
+            <div style="background: #9b59b6; color: white; padding: 20px; border-radius: 10px; text-align: center;">
+                <div style="font-size: 14px; opacity: 0.9;">ارزش ذاتی (میانگین)</div>
+                <div style="font-size: 24px; font-weight: bold; margin: 10px 0;">3,448 ریال</div>
+            </div>
+            <div style="background: #e74c3c; color: white; padding: 20px; border-radius: 10px; text-align: center;">
+                <div style="font-size: 14px; opacity: 0.9;">اختلاف قیمت</div>
+                <div style="font-size: 24px; font-weight: bold; margin: 10px 0;">-60.7%</div>
+            </div>
+        </div>
+        
+        <div class="warning-box" style="margin-top: 30px;">
+            <strong>⚠️ هشدار:</strong> این تحلیل صرفاً جنبه آموزشی و اطلاع‌رسانی دارد و نباید به عنوان توصیه سرمایه‌گذاری تلقی شود.
+            قبل از هر تصمیم سرمایه‌گذاری، حتماً با مشاور مالی خود مشورت کنید و تحقیقات بیشتری انجام دهید.
+        </div>
+        
+        <div class="footer" style="margin-top: 60px; padding: 30px; background: #ecf0f1; border-radius: 15px; text-align: center;">
+            <p style="margin: 5px 0;">📅 تاریخ تهیه گزارش: 1403/08/25 (15 نوامبر 2025)</p>
+            <p style="margin: 5px 0;">🏢 سیستم تحلیل بنیادی بهگزین (Behgozin Fundamental Analysis)</p>
+            <p style="margin: 5px 0;">📧 shakour@behgozin.ir</p>
+        </div>
+    </div>
+</body>
+</html>
